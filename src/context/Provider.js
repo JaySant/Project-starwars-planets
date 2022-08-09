@@ -4,6 +4,7 @@ import Mycontext from './MyContext';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
+  const [filterByName, setFilterByName] = useState('');
 
   useEffect(() => {
     const getData = async () => {
@@ -15,8 +16,12 @@ function Provider({ children }) {
     getData();
   }, []);
 
+  function handleChange({ target: { value } }) {
+    setFilterByName(value);
+  }
+
   return (
-    <Mycontext.Provider value={ { data } }>
+    <Mycontext.Provider value={ { data, filterByName, handleChange } }>
       {children}
     </Mycontext.Provider>
   );
@@ -26,3 +31,5 @@ Provider.propTypes = {
 }.isRequired;
 
 export default Provider;
+
+// Obrigado Cestari pela dica de colocar o handle no Provider
