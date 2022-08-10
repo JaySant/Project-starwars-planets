@@ -13,6 +13,8 @@ function FilterName() {
           data-testid="name-filter"
           onChange={ handleChange }
           value={ filterByName }
+          name="name"
+
         />
       </form>
     </div>
