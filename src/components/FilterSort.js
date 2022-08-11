@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import Mycontext from '../context/MyContext';
 
 function FilterSort() {
-  const { options, sortBy, setSortBy, onOrderFilter } = useContext(Mycontext);
+  const { options, sortBy, setSortBy, onOrderFilter,
+    handleRadio } = useContext(Mycontext);
   return (
     <div>
       <label htmlFor="column-sort">
@@ -33,9 +34,7 @@ function FilterSort() {
             type="radio"
             value="ASC"
             data-testid="column-sort-input-asc"
-            onChange={ ({ target: { value } }) => setSortBy({
-              ...sortBy, sort: value,
-            }) }
+            onChange={ handleRadio }
             id="column-asc"
             name="sort"
           />
@@ -49,10 +48,7 @@ function FilterSort() {
             value="DESC"
             name="sort"
             data-testid="column-sort-input-desc"
-            // eslint-disable-next-line sonarjs/no-identical-functions
-            onChange={ ({ target: { value } }) => setSortBy({
-              ...sortBy, sort: value,
-            }) }
+            onChange={ handleRadio }
             id="column-desc"
           />
           Descendente

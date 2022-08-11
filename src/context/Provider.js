@@ -111,7 +111,11 @@ function Provider({ children }) {
     };
     SortFilter[sortBy.sort]();
     setNewData(dataSort);
-    console.log(dataSort);
+  }
+
+  function handleRadio({ target }) {
+    const { value } = target;
+    setSortBy({ ...sortBy, sort: value });
   }
 
   return (
@@ -130,6 +134,7 @@ function Provider({ children }) {
         setSortBy,
         sortBy,
         onOrderFilter,
+        handleRadio,
       } }
     >
       {children}
