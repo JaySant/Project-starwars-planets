@@ -16,6 +16,11 @@ function Provider({ children }) {
   const [filterByName, setFilterByName] = useState('');
   const [filterNumeric, setFilterNumeric] = useState([]);
   const [options, setOptions] = useState(INITIAL_OPTIONS);
+  // const [isOrder, setIsOrder] = useState(false);
+  const [sortBy, setSortBy] = useState({
+    column: 'population',
+    sort: 'ASC',
+  });
 
   const [filter, setFilter] = useState({
     column: 'population',
@@ -24,11 +29,12 @@ function Provider({ children }) {
   });
 
   useEffect(() => {
+    const negOne = -1;
     const getData = async () => {
       const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
       const dataJson = await response.json();
       const dataResult = dataJson.results;
-      setData(dataResult);
+      setData(dataResult.sort((a, b) => (a.name > b.name ? 1 : negOne)));
       setNewData(dataResult);
     };
     getData();
@@ -42,8 +48,7 @@ function Provider({ children }) {
     }
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit() {
     setOptions(options.filter((option) => option !== filter.column));
     setFilterNumeric((prev) => [...prev, filter]);
   }
@@ -78,9 +83,36 @@ function Provider({ children }) {
       });
       return result;
     }, data);
-
     setNewData(res);
   }, [filter, filterNumeric, data]);
+
+  function onOrderFilter() {
+    const dataSort = [...data];
+    const numNegative = -1;
+    const SortFilter = {
+      ASC: () => dataSort
+        .sort((a, b) => parseInt(a[sortBy.column], 10) - parseInt(b[sortBy.column], 10)),
+      // if (a[sortBy.column] === 'unknown') {
+      //   return 1;
+      // }
+      // if (b[sortBy.column] === 'unknown') {
+      //   return numNegative;
+      // }
+      DESC: () => dataSort
+        .sort((a, b) => {
+          if (a[sortBy.column] === 'unknown') {
+            return 1;
+          }
+          if (b[sortBy.column] === 'unknown') {
+            return numNegative;
+          }
+          return parseInt(b[sortBy.column], 10) - parseInt(a[sortBy.column], 10);
+        }),
+    };
+    SortFilter[sortBy.sort]();
+    setNewData(dataSort);
+    console.log(dataSort);
+  }
 
   return (
     <Mycontext.Provider
@@ -95,6 +127,9 @@ function Provider({ children }) {
         setFilterNumeric,
         onDeleteFilter,
         handleResetFilter,
+        setSortBy,
+        sortBy,
+        onOrderFilter,
       } }
     >
       {children}

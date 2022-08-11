@@ -12,7 +12,7 @@ function FilterNumber() {
 
   return (
     <div>
-      <form onSubmit={ handleSubmit }>
+      <form>
         <label htmlFor="column">
           Column
           <select
@@ -20,6 +20,7 @@ function FilterNumber() {
             onChange={ handleChange }
             value={ filter.column }
             name="column"
+            id="column"
           >
             {
               options.map((option) => (
@@ -38,6 +39,7 @@ function FilterNumber() {
             value={ filter.comparison }
             onChange={ handleChange }
             name="comparison"
+            id="comparison"
           >
             <option key="maior que">maior que</option>
             <option key="menor que">menor que</option>
@@ -46,28 +48,31 @@ function FilterNumber() {
         </label>
 
         <label htmlFor="value">
+          Value
           <input
             data-testid="value-filter"
             value={ filter.value }
             onChange={ handleChange }
             name="value"
+            id="value"
           />
         </label>
 
         <button
-          type="submit"
+          type="button"
           data-testid="button-filter"
+          onClick={ handleSubmit }
+
         >
           FILTRAR
 
         </button>
 
       </form>
-
       <div>
         {
-          filterNumeric.map((item) => (
-            <div data-testid="filter" key={ item.id }>
+          filterNumeric.map((item, index) => (
+            <div data-testid="filter" key={ index }>
               <div>
                 { item.column }
                 {' '}
